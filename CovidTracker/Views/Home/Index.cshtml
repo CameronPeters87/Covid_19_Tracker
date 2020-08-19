@@ -1,0 +1,68 @@
+﻿@model CovidTracker.Models.SummaryViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Summary of Covid 19</h2>
+
+<h4>Total Countries: @Model.TotalCountries</h4>
+
+<h2>Global</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            TotalConfirmed
+        </th>
+
+        <th></th>
+    </tr>
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Global.TotalConfirmed)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+</table>
+
+
+<h2>Countries Sorted by Total Confirmed</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Country
+        </th>
+        <th>
+            TotalConfirmed
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.SortedCountries)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalConfirmed)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,51 @@
+﻿@model CovidTracker.Models.TrackerViewModel
+
+@{
+    ViewBag.Title = "Tracker";
+}
+
+<!-- South Africa Covid Card -->
+<div class="row">
+    <div class="col-xl-6 col-md-6 mb-4 mt-4">
+        <div class="card border-left-orange shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <span class="d-inline-block">
+                                <img src="https://img.icons8.com/color/48/000000/south-africa.png" />
+                            </span>
+                            @Model.Country_SouthAfrica.Country
+                        </div>
+                        <div class="mb-0 text-gray-800">
+                            <table class=" table table-borderless">
+                                <thead>
+                                    <tr class="font-weight-bold">
+                                        <td class="table-warning">Confirmed</td>
+                                        <td class="table-success">Recovered</td>
+                                        <td class="table-danger">Dead</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>@Model.RSA_TotalConfirmed</td>
+                                        <td>@Model.RSA_TotalRecovered</td>
+                                        <td>@Model.RSA_TotalDeaths</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        @*<i class="fa fa-calendar fa-2x text-gray-300"></i>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 col-md-6 mb-4 mt-4">
+        <div class="border">
+            <p>Test</p>
+        </div>
+    </div>
+</div>
