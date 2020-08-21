@@ -9,5 +9,9 @@
         public string RSA_TotalRecovered { get; set; }
         public string RSA_TotalDeaths { get; set; }
 
+        // Global
+        public string Global_TotalConfirmed { get; set; }
+        public string Global_TotalRecovered { get; set; }
+        public string Global_TotalDeaths { get; set; }
     }
 }

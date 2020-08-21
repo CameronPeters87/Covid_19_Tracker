@@ -20,7 +20,8 @@ namespace CovidTracker
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/DateTime.js"));
+                      "~/Scripts/DateTime.js",
+                      "~/Scripts/Heatmap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

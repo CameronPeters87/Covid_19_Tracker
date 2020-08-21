@@ -1,5 +1,7 @@
 ﻿using CovidTracker.Extensions;
 using CovidTracker.Models;
+using Geocoding;
+using Geocoding.Google;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -12,7 +14,8 @@ namespace CovidTracker.Controllers
     public class HomeController : Controller
     {
         private string baseUrl = "https://api.covid19api.com/";
-
+        private IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyCPWzQ0h1vedStiQWFQ5Ez1Jf2f1rj209Q" };
+        private ApplicationDbContext db = new ApplicationDbContext();
         public async Task<ActionResult> Index()
         {
             SummaryViewModel summary = new SummaryViewModel();
@@ -42,6 +45,8 @@ namespace CovidTracker.Controllers
 
         public async Task<ActionResult> Tracker()
         {
+            var watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
             SummaryViewModel summary = new SummaryViewModel();
             TrackerViewModel tracker = new TrackerViewModel();
 
@@ -61,17 +66,19 @@ namespace CovidTracker.Controllers
                 }
             }
 
-            tracker.Country_SouthAfrica = summary.Countries.Where(s => s.Country == "South Africa")
-                .FirstOrDefault();
+            await tracker.FillTrackerModel(summary);
 
-            tracker.RSA_TotalConfirmed = await Helper.FormatIntToString(
-                tracker.Country_SouthAfrica.TotalConfirmed);
+            var latLongTableExists = await summary.CheckDBForLatLongExists(db, geocoder);
 
-            tracker.RSA_TotalRecovered = await Helper.FormatIntToString(
-                tracker.Country_SouthAfrica.TotalRecovered);
+            if (latLongTableExists)
+            {
+                ViewBag.DataPoints = db.LatLongDtos.ToList();
+            }
 
-            tracker.RSA_TotalDeaths = await Helper.FormatIntToString(
-                tracker.Country_SouthAfrica.TotalDeaths);
+            watch.Stop();
+
+            var timeTakenToExecuteMilliseconds = watch.ElapsedMilliseconds;
+            var timeTakenToExecute = watch.Elapsed;
 
             return View(tracker);
         }

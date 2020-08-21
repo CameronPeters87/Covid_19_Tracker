@@ -3,14 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>Covid-19 Stats</title>
+
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
-    @*<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />*@
 
 </head>
 <body>
+
     <div class="navbar navbar-fixed-top">
         <div class="container container-navbar">
             <div class="navbar-header">
@@ -20,6 +22,13 @@
                     </span>
                 </div>
             </div>
+
+            <div class="float-right">
+                <span>
+                    <img src="https://img.icons8.com/office/80/000000/record.png" />
+                </span>
+            </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                 </ul>
@@ -35,10 +44,18 @@
     </div>
 
     <div class="date">
-        <h6 id="date" class="ml-1 mr-4"></h6>
+        <div class="img-thumbnail">
+            <span class="d-inline-block pull-left mr-1">
+                <img src="~/Content/coronavirus-live-stats-logo.png" width="50" height="50" />
+            </span>
+            <h6 id="date" class="ml-1 mr-4"></h6>
+        </div>
     </div>
 
-@Scripts.Render("~/bundles/jquery")
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPWzQ0h1vedStiQWFQ5Ez1Jf2f1rj209Q&libraries=visualization&callback=initMap"
+            type="text/javascript"></script>
+
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

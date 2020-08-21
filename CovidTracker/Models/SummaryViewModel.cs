@@ -8,7 +8,6 @@ namespace CovidTracker.Models
         public virtual GlobalViewModel Global { get; set; }
         public IEnumerable<CountryViewModel> Countries { get; set; }
 
-        //
         public IEnumerable<CountryViewModel> SortedCountries { get; set; }
 
         public int TotalCountries { get; set; }

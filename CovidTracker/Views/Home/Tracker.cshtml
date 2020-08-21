@@ -6,7 +6,8 @@
 
 <!-- South Africa Covid Card -->
 <div class="row">
-    <div class="col-xl-6 col-md-6 mb-4 mt-4">
+
+    <div class="col-xl-6 col-md-6 mb-4 mt-4 sa-card">
         <div class="card border-left-orange shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -44,8 +45,133 @@
         </div>
     </div>
     <div class="col-xl-6 col-md-6 mb-4 mt-4">
-        <div class="border">
-            <p>Test</p>
+        <div class="card shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <span class="d-inline-block">
+                                <img src="https://img.icons8.com/color/48/000000/earth-planet.png" />
+                            </span>
+                            Global Stats
+                        </div>
+                        <div class="content">
+
+                            <div class="mb-0 text-gray-800">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <i class="list-group-item list-group-item-warning fas fa-syringe d-inline-block"></i>
+                                        <span class="font-weight-bold">
+                                            Confirmed: @Model.Global_TotalConfirmed
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <span class="list-group-item list-group-item-success fa fa-check"></span>
+                                        <span class="font-weight-bold">
+                                            Recovered: @Model.Global_TotalRecovered
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="list-group-item list-group-item-danger fas fa-skull d-inline-block"></i>
+                                        <span class="font-weight-bold">
+                                            Dead: @Model.Global_TotalDeaths
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        @*<i class="fa fa-calendar fa-2x text-gray-300"></i>*@
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
+
+<div id="map"></div>
+
+
+@section scripts {
+
+    <script>
+
+        let map, heatmap;
+
+        var myLocation = { lat: -29.779990, lng: 31.019030 };
+
+        var dataPointsRaw = @Html.Raw(Json.Encode(@ViewBag.DataPoints));
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 1,
+                center: { lat: 0, lng: 0 },
+                mapTypeId: "satellite",
+                zoomControl: false,
+                gestureHandling: 'none',
+                disableDefaultUI: true,
+                cursor: "default"
+            });
+
+
+
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: getPoints()
+            });
+
+            heatmap.setMap(map);
+        }
+
+        // Heatmap data: Covid Points
+        function getPoints() {
+            var dataPoints = [];
+
+            var latLngArray = [];
+
+            for (var i = 0; i < dataPointsRaw.length; i++) {
+                const gData = new google.maps.LatLng(dataPointsRaw[i].Latitude, dataPointsRaw[i].Longitude);
+                latLngArray.push(gData);
+            }
+
+            return latLngArray;
+        }
+
+
+        function toggleHeatmap() {
+            heatmap.setMap(heatmap.getMap() ? null : map);
+        }
+
+        function changeGradient() {
+            const gradient = [
+                "rgba(0, 255, 255, 0)",
+                "rgba(0, 255, 255, 1)",
+                "rgba(0, 191, 255, 1)",
+                "rgba(0, 127, 255, 1)",
+                "rgba(0, 63, 255, 1)",
+                "rgba(0, 0, 255, 1)",
+                "rgba(0, 0, 223, 1)",
+                "rgba(0, 0, 191, 1)",
+                "rgba(0, 0, 159, 1)",
+                "rgba(0, 0, 127, 1)",
+                "rgba(63, 0, 91, 1)",
+                "rgba(127, 0, 63, 1)",
+                "rgba(191, 0, 31, 1)",
+                "rgba(255, 0, 0, 1)"
+            ];
+            heatmap.set("gradient", heatmap.get("gradient") ? null : gradient);
+        }
+
+        function changeRadius() {
+            heatmap.set("radius", heatmap.get("radius") ? null : 20);
+        }
+
+        function changeOpacity() {
+            heatmap.set("opacity", heatmap.get("opacity") ? null : 0.2);
+        }
+
+
+    </script>
+
+}
