@@ -13,5 +13,8 @@
         public string Global_TotalConfirmed { get; set; }
         public string Global_TotalRecovered { get; set; }
         public string Global_TotalDeaths { get; set; }
+
+        // News
+        public NewsViewModel NewsViewModel { get; set; }
     }
 }

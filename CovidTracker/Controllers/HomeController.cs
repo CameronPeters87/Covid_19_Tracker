@@ -1,4 +1,5 @@
-﻿using CovidTracker.Extensions;
+﻿using CovidTracker.APIModels;
+using CovidTracker.Extensions;
 using CovidTracker.Models;
 using Geocoding;
 using Geocoding.Google;
@@ -14,6 +15,7 @@ namespace CovidTracker.Controllers
     public class HomeController : Controller
     {
         private string baseUrl = "https://api.covid19api.com/";
+        private string baseUrlNews = "http://newsapi.org/";
         private IGeocoder geocoder = new GoogleGeocoder() { ApiKey = "AIzaSyCPWzQ0h1vedStiQWFQ5Ez1Jf2f1rj209Q" };
         private ApplicationDbContext db = new ApplicationDbContext();
         public async Task<ActionResult> Index()
@@ -47,9 +49,13 @@ namespace CovidTracker.Controllers
         {
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
+
             SummaryViewModel summary = new SummaryViewModel();
+            NewsAPI newsAPI = new NewsAPI();
             TrackerViewModel tracker = new TrackerViewModel();
 
+            #region HttpClient Config
+            // Covid Stats
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseUrl);
@@ -65,8 +71,30 @@ namespace CovidTracker.Controllers
                     summary = JsonConvert.DeserializeObject<SummaryViewModel>(covidResponse);
                 }
             }
+            // South Africa News
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrlNews);
 
-            await tracker.FillTrackerModel(summary);
+                HttpResponseMessage responseMessage = await client.GetAsync("v2/top-headlines?country=za&category=health&apiKey=8066df69f5c2435c9a6b0510ea7b16d5");
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    //Storing the response details recieved from web api   
+                    var newsResponse = responseMessage.Content
+                        .ReadAsStringAsync().Result;
+
+                    newsAPI = JsonConvert.DeserializeObject<NewsAPI>(newsResponse);
+                }
+            }
+            #endregion
+
+            NewsViewModel news = new NewsViewModel
+            {
+                Articles = newsAPI.Articles.ToList()
+            };
+
+            tracker.FillTrackerModel(summary, news);
 
             var latLongTableExists = await summary.CheckDBForLatLongExists(db, geocoder);
 
@@ -76,9 +104,8 @@ namespace CovidTracker.Controllers
             }
 
             watch.Stop();
-
-            var timeTakenToExecuteMilliseconds = watch.ElapsedMilliseconds;
-            var timeTakenToExecute = watch.Elapsed;
+            _ = watch.ElapsedMilliseconds;
+            _ = watch.Elapsed;
 
             return View(tracker);
         }
