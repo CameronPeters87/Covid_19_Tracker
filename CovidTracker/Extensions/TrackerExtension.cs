@@ -31,6 +31,7 @@ namespace CovidTracker.Extensions
 
             // News
             tracker.NewsViewModel = news;
+            tracker.NewsViewModel.Articles = tracker.NewsViewModel.Articles.Take(5).ToList();
             foreach (var item in tracker.NewsViewModel.Articles)
             {
                 item.PublishedAt = item.PublishedAt.Substring(0, 10);

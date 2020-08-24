@@ -95,6 +95,8 @@
 
 @Html.Partial("_ArticleSectionPartial", Model.NewsViewModel)
 
+<br />
+
 <div id="map"></div>
 
 
@@ -110,7 +112,7 @@
 
         function initMap() {
             map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 1,
+                zoom: 1.85,
                 center: { lat: 0, lng: 0 },
                 mapTypeId: "satellite",
                 zoomControl: false,
