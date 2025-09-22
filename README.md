@@ -62,6 +62,9 @@ project-root/
 * Explore the **heatmap** to see the global distribution of cases.
 * Zoom in/out on the map to view country-specific information.
 
+* <img width="1919" height="913" alt="image" src="https://github.com/user-attachments/assets/4e223c7f-5250-4d71-805f-f448956ee525" />
+
+
 ---
 
 ## 📖 Future Improvements
