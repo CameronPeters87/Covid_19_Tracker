@@ -75,4 +75,4 @@ project-root/
 
 ## 👩‍💻 Author
 
-*Developed by \Cameron \Peters* as a learning project using **MVC .NET Framework** with **REST API integration** and **Google Maps visualization**.
+*Developed by Cameron Peters* as a learning project using **MVC .NET Framework** with **REST API integration** and **Google Maps visualization**.
